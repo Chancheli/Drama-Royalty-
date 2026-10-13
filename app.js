@@ -1,31 +1,31 @@
 const scenesData = [
   {
     id: 'soraya_01',
-    title: 'Maldita Lisiada! (Soraya Montenegro)',
+    title: 'Maldita Lisiada! (Σοράγια Montenegro)',
     category: 'mexican',
     duration: '01:15',
-    roles: 'Soraya, Alicia, Nando',
+    roles: 'Σοράγια, Αλίσια, Νάντο',
     difficulty: '🔥 🔥 🔥 🔥 🔥',
     videoUrl: 'media/soraya_01/video.mp4',
     subtitlesUrl: 'media/soraya_01/subtitles.vtt',
-    thumb: 'https://via.placeholder.com/400x225/1f2833/e91e63?text=Soraya+Montenegro'
+    thumb: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&auto=format&fit=crop&q=80'
   },
   {
     id: 'dragonball_intro',
-    title: 'Dragon Ball Intro - Prepei kai Mporo',
+    title: 'Dragon Ball Intro - Πρέπει και Μπορώ',
     category: 'anime',
     duration: '01:20',
-    roles: 'Oli i Parea',
+    roles: 'Όλη η Παρέα',
     difficulty: '🔥 🔥 🔥 🔥',
     videoUrl: 'media/dragonball/video.mp4',
     subtitlesUrl: 'media/dragonball/subtitles.vtt',
-    thumb: 'https://via.placeholder.com/400x225/1f2833/00f5d4?text=Dragon+Ball+Intro'
+    thumb: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=80'
   }
 ];
 
 const shopProducts = [
-  { id: 'photo_magnet', name: '📸 Fotografikos Magnitis Skinis', price: 6.00, desc: 'Anamnistikos magnitis me tin fotografia sas!' },
-  { id: 'vip_cocktail', name: '🍸 Drama Royalty Signature Cocktail', price: 8.00, desc: 'Drosistiko kokteil gia ta potaria sas.' }
+  { id: 'photo_magnet', name: '📸 Φωτογραφικός Μαγνήτης Σκηνής', price: 6.00, desc: 'Αναμνηστικός μαγνήτης με τη φωτογραφία σας!' },
+  { id: 'vip_cocktail', name: '🍸 Drama Royalty Signature Cocktail', price: 8.00, desc: 'Δροσιστικό κοκτέιλ για τις φωνητικές χορδές.' }
 ];
 
 let cart = [];
@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderScenes(category) {
   const grid = document.getElementById('scenesGrid');
+  if(!grid) return;
   grid.innerHTML = '';
   const filtered = category === 'all' ? scenesData : scenesData.filter(s => s.category === category);
   filtered.forEach(scene => {
@@ -66,7 +67,7 @@ function openPlayerModal(scene) {
   const video = document.getElementById('dubbingVideo');
   const track = document.getElementById('videoTrack');
   document.getElementById('modalSceneTitle').innerText = scene.title;
-  document.getElementById('modalSceneRoles').innerText = `Xaraktires: ${scene.roles}`;
+  document.getElementById('modalSceneRoles').innerText = `Χαρακτήρες: ${scene.roles}`;
   video.src = scene.videoUrl;
   track.src = scene.subtitlesUrl;
   modal.style.display = 'flex';
@@ -93,7 +94,7 @@ function renderShop() {
         <p style="font-size: 0.85rem; color: #94a3b8;">${prod.desc}</p>
         <strong style="color: #ffb703;">${prod.price.toFixed(2)}€</strong>
       </div>
-      <button class="btn btn-primary" onclick="addToCart('${prod.id}')">+ Prosthiki</button>
+      <button class="btn btn-primary" onclick="addToCart('${prod.id}')">+ Προσθήκη</button>
     `;
     grid.appendChild(item);
   });
@@ -141,10 +142,10 @@ function setupEventListeners() {
     playBtn.onclick = () => {
       if (video.paused) {
         video.play();
-        playBtn.innerText = '⏸️ Pausi';
+        playBtn.innerText = '⏸️ Παύση';
       } else {
         video.pause();
-        playBtn.innerText = '▶️ Enarxi';
+        playBtn.innerText = '▶️ Έναρξη';
       }
     };
   }
@@ -161,10 +162,10 @@ function setupEventListeners() {
   if(checkoutBtn && shopModal) {
     checkoutBtn.onclick = () => {
       if (cart.length === 0) {
-        alert('To kalathi sou einai adeio!');
+        alert('Το καλάθι σου είναι άδειο!');
         return;
       }
-      alert('I paraggelia estaile! Enas ypallilos tha sas ferei ta anamnistika sto Domatio 01.');
+      alert('Η παραγγελία εστάλη! Ένας υπάλληλος θα σας φέρει τα αναμνηστικά στο Δωμάτιο 01.');
       cart = [];
       updateCartUI();
       shopModal.style.display = 'none';
