@@ -6,8 +6,9 @@ const scenesData = [
     duration: '01:15',
     roles: 'Σοράγια, Αλίσια, Νάντο',
     difficulty: '🔥 🔥 🔥 🔥 🔥',
-    videoUrl: 'media/soraya_01/video.mp4',
-    subtitlesUrl: 'media/soraya_01/subtitles.vtt',
+    // Δείγμα βίντεο για δοκιμή μέχρι να ανεβάσεις τα δικά σου αρχεία στο GitHub:
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    subtitlesUrl: '',
     thumb: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&auto=format&fit=crop&q=80'
   },
   {
@@ -17,8 +18,8 @@ const scenesData = [
     duration: '01:20',
     roles: 'Όλη η Παρέα',
     difficulty: '🔥 🔥 🔥 🔥',
-    videoUrl: 'media/dragonball/video.mp4',
-    subtitlesUrl: 'media/dragonball/subtitles.vtt',
+    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    subtitlesUrl: '',
     thumb: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=80'
   }
 ];
@@ -66,19 +67,27 @@ function openPlayerModal(scene) {
   const modal = document.getElementById('playerModal');
   const video = document.getElementById('dubbingVideo');
   const track = document.getElementById('videoTrack');
+  const playBtn = document.getElementById('playPauseBtn');
+
   document.getElementById('modalSceneTitle').innerText = scene.title;
   document.getElementById('modalSceneRoles').innerText = `Χαρακτήρες: ${scene.roles}`;
+
+  if(playBtn) playBtn.innerText = '▶️ Έναρξη';
+
   video.src = scene.videoUrl;
-  track.src = scene.subtitlesUrl;
+  if (track) track.src = scene.subtitlesUrl || '';
+
   modal.style.display = 'flex';
 }
 
 function closePlayerModal() {
   const modal = document.getElementById('playerModal');
   const video = document.getElementById('dubbingVideo');
-  video.pause();
-  video.currentTime = 0;
-  modal.style.display = 'none';
+  if (video) {
+    video.pause();
+    video.currentTime = 0;
+  }
+  if (modal) modal.style.display = 'none';
 }
 
 function renderShop() {
@@ -109,9 +118,13 @@ function addToCart(prodId) {
 }
 
 function updateCartUI() {
-  document.getElementById('cartCount').innerText = cart.length;
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
-  document.getElementById('cartTotal').innerText = `${total.toFixed(2)}€`;
+  const countEl = document.getElementById('cartCount');
+  const totalEl = document.getElementById('cartTotal');
+  if(countEl) countEl.innerText = cart.length;
+  if(totalEl) {
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    totalEl.innerText = `${total.toFixed(2)}€`;
+  }
 }
 
 function setupEventListeners() {
@@ -138,15 +151,23 @@ function setupEventListeners() {
 
   const video = document.getElementById('dubbingVideo');
   const playBtn = document.getElementById('playPauseBtn');
+
   if(playBtn && video) {
     playBtn.onclick = () => {
       if (video.paused) {
-        video.play();
-        playBtn.innerText = '⏸️ Παύση';
+        video.play().then(() => {
+          playBtn.innerText = '⏸️ Παύση';
+        }).catch(err => {
+          console.error("Σφάλμα αναπαραγωγής βίντεο:", err);
+        });
       } else {
         video.pause();
         playBtn.innerText = '▶️ Έναρξη';
       }
+    };
+
+    video.onended = () => {
+      playBtn.innerText = '▶️ Έναρξη';
     };
   }
 
@@ -154,7 +175,9 @@ function setupEventListeners() {
   if(restartBtn && video) {
     restartBtn.onclick = () => {
       video.currentTime = 0;
-      video.play();
+      video.play().then(() => {
+        if(playBtn) playBtn.innerText = '⏸️ Παύση';
+      });
     };
   }
 
