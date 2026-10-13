@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drama Royalty - Cult Dubbing & Karaoke Studio</title>
-  <!-- Σύνδεση με το αρχείο στυλ (CSS) -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- 1. ΕΠΙΚΕΦΑΛΙΔΑ (HEADER) -->
+  <!-- 1. HEADER -->
   <header class="app-header">
     <div class="logo-container">
       <span class="logo-icon">👑</span>
@@ -18,7 +17,6 @@
         <p class="logo-subtitle">CULT DUBBING & KARAOKE STUDIO</p>
       </div>
     </div>
-    
     <div class="header-actions">
       <span class="room-badge">🟢 ΔΩΜΑΤΙΟ 01</span>
       <button id="cartBtn" class="btn btn-shop">
@@ -27,87 +25,76 @@
     </div>
   </header>
 
-  <!-- 2. ΚΥΡΙΩΣ ΠΕΡΙΕΧΟΜΕΝΟ -->
+  <!-- 2. MAIN CONTENT -->
   <main class="main-content">
     
-    <!-- Φίλτρα Κατηγοριών -->
+    <!-- Κατηγορίες -->
     <section class="categories-section">
-      <h2>📂 Κατηγορίες Περιεχομένου</h2>
+      <h2>📁 Κατηγορίες Περιεχομένου</h2>
       <div class="category-buttons">
         <button class="cat-btn active" data-category="all">✨ Όλα</button>
         <button class="cat-btn" data-category="mexican">🎭 Μεξικάνικο Δράμα</button>
-        <button class="cat-btn" data-category="foskolos">📺 Φωσκολικό Δράμα</button>
-        <button class="cat-btn" data-category="greek-cult">⚡ Greek Cult & Reality</button>
         <button class="cat-btn" data-category="anime">🐉 Retro & Anime Intros</button>
       </div>
     </section>
 
-    <!-- Πλέγμα Βιβλιοθήκης (Library Grid) -->
-    <section class="library-section">
+    <!-- Πλέγμα Σκηνών -->
+    <section class="scenes-section">
       <div id="scenesGrid" class="scenes-grid">
-        <!-- Οι κάρτες των σκηνών θα δημιουργούνται δυναμικά από το JavaScript (app.js) -->
+        <!-- Οι κάρτες φορτώνονται δυναμικά από την JS -->
       </div>
     </section>
 
   </main>
 
-  <!-- 3. MODAL: PLAYER & TELEPROMPTER -->
+  <!-- 3. PLAYER MODAL -->
   <div id="playerModal" class="modal">
-    <div class="modal-content player-modal-content">
+    <div class="modal-content">
       <button id="closePlayerBtn" class="close-btn">&times;</button>
+      <h2 id="modalSceneTitle" style="color: var(--accent-magenta); margin-bottom: 5px;">Τίτλος Σκηνής</h2>
+      <p id="modalSceneRoles" style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.9rem;">Χαρακτήρες: -</p>
       
       <div class="player-container">
-        <!-- HTML5 Video Player -->
         <div class="video-wrapper">
-          <video id="dubbingVideo" preload="metadata">
+          <video id="dubbingVideo" controls>
             <source src="" type="video/mp4">
-            <track id="videoTrack" kind="subtitles" srclang="el" label="Ελληνικά" default>
-            Το πρόγραμμα περιήγησής σας δεν υποστηρίζει το στοιχείο βίντεο.
+            <track id="videoTrack" kind="subtitles" srclang="el" label="Ελληνικά">
+            Το πρόγραμμα περιήγησης δεν υποστηρίζει βίντεο.
           </video>
         </div>
 
-        <!-- Teleprompter / Περιοχή Υποτίτλων -->
-        <div class="teleprompter-container">
-          <div class="scene-info-header">
-            <h3 id="modalSceneTitle">Τίτλος Σκηνής</h3>
-            <p id="modalSceneRoles">Χαρακτήρες: -</p>
-          </div>
+        <div class="teleprompter-box">
+          <div id="subtitleDisplay" class="subtitle-text">Πατήστε "Έναρξη" για να ξεκινήσει η σκηνή...</div>
+        </div>
 
-          <div id="teleprompterBox" class="teleprompter-box">
-            <p id="currentSubtitle" class="subtitle-text">
-              Πατήστε "Έναρξη" για να ξεκινήσει η σκηνή...
-            </p>
-          </div>
-
-          <div class="player-controls">
-            <button id="playPauseBtn" class="btn btn-primary">▶️ Έναρξη</button>
-            <button id="restartBtn" class="btn btn-secondary">🔄 Επανεκκίνηση</button>
-            <button id="muteVocalsBtn" class="btn btn-warning">🔇 Αφαίρεση Φωνής (AI Mute)</button>
-          </div>
+        <div class="player-controls">
+          <button id="playPauseBtn" class="btn btn-primary">▶️ Έναρξη</button>
+          <button id="restartBtn" class="btn btn-secondary">🔄 Επανεκκίνηση</button>
+          <button id="aiMuteBtn" class="btn btn-warning">🔇 Αφαίρεση Φωνής (AI Mute)</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 4. MODAL: ΚΑΤΑΣΤΗΜΑ ΑΝΑΜΝΗΣΤΙΚΩΝ -->
+  <!-- 4. SHOP MODAL -->
   <div id="shopModal" class="modal">
-    <div class="modal-content shop-modal-content">
+    <div class="modal-content">
       <button id="closeShopBtn" class="close-btn">&times;</button>
       <h2>🎁 Drama Royalty Souvenirs & Gifts</h2>
-      <p>Παραγγείλτε τα αναμνηστικά σας και θα σας τα φέρουμε αμέσως στο δωμάτιο!</p>
-
+      <p style="color: var(--text-muted); margin-bottom: 15px;">Παραγγείλτε τα αναμνηστικά σας και θα σας τα φέρουμε αμέσως στο δωμάτιο!</p>
+      
       <div id="shopGrid" class="shop-grid">
-        <!-- Τα προϊόντα φορτώνονται δυναμικά -->
+        <!-- Προϊόντα -->
       </div>
 
-      <div class="cart-summary">
-        <h3>Σύνολο Παραγγελίας: <span id="cartTotal">0.00€</span></h3>
-        <button id="checkoutBtn" class="btn btn-success">🛒 Παραγγελία στο Δωμάτιο</button>
+      <div class="cart-summary" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: var(--accent-gold);">Σύνολο Παραγγελίας: <span id="cartTotal">0.00€</span></h3>
+        <button id="checkoutBtn" class="btn btn-shop">🛒 Παραγγελία στο Δωμάτιο</button>
       </div>
     </div>
   </div>
 
-  <!-- Σύνδεση με το αρχείο λειτουργιών -->
+  <!-- Σύνδεση με το αρχείο JavaScript -->
   <script src="app.js"></script>
 </body>
 </html>
