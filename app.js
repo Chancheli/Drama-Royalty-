@@ -6,9 +6,7 @@ const scenesData = [
     duration: '01:15',
     roles: 'Σοράγια, Αλίσια, Νάντο',
     difficulty: '🔥 🔥 🔥 🔥 🔥',
-    // Δείγμα βίντεο για δοκιμή μέχρι να ανεβάσεις τα δικά σου αρχεία στο GitHub:
     videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    subtitlesUrl: '',
     thumb: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&auto=format&fit=crop&q=80'
   },
   {
@@ -19,7 +17,6 @@ const scenesData = [
     roles: 'Όλη η Παρέα',
     difficulty: '🔥 🔥 🔥 🔥',
     videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    subtitlesUrl: '',
     thumb: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=80'
   }
 ];
@@ -42,6 +39,7 @@ function renderScenes(category) {
   if(!grid) return;
   grid.innerHTML = '';
   const filtered = category === 'all' ? scenesData : scenesData.filter(s => s.category === category);
+  
   filtered.forEach(scene => {
     const card = document.createElement('div');
     card.className = 'scene-card';
@@ -66,7 +64,6 @@ function renderScenes(category) {
 function openPlayerModal(scene) {
   const modal = document.getElementById('playerModal');
   const video = document.getElementById('dubbingVideo');
-  const track = document.getElementById('videoTrack');
   const playBtn = document.getElementById('playPauseBtn');
 
   document.getElementById('modalSceneTitle').innerText = scene.title;
@@ -75,8 +72,7 @@ function openPlayerModal(scene) {
   if(playBtn) playBtn.innerText = '▶️ Έναρξη';
 
   video.src = scene.videoUrl;
-  if (track) track.src = scene.subtitlesUrl || '';
-
+  video.load();
   modal.style.display = 'flex';
 }
 
@@ -158,7 +154,7 @@ function setupEventListeners() {
         video.play().then(() => {
           playBtn.innerText = '⏸️ Παύση';
         }).catch(err => {
-          console.error("Σφάλμα αναπαραγωγής βίντεο:", err);
+          console.error("Σφάλμα:", err);
         });
       } else {
         video.pause();
